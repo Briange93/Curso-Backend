@@ -13,6 +13,14 @@ class ProductManager{
     getProduct(){
         return this.products
     }
+
+    getProductById(id){
+        if(!this.products.find((product)=> product.id === id)){
+            return 'Not Found'
+        }else{
+            return this.products.find((product)=> product.id === id)
+        }
+    }
 }
  const productos = new ProductManager();
 
@@ -22,3 +30,7 @@ class ProductManager{
  productos.addProduct('silla','para sentarse',1500,'imagen2.com','abc124',20)
 
  console.log(productos.getProduct());
+
+ console.log(productos.getProductById(2));
+
+ console.log(productos.getProductById(3));
