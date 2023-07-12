@@ -61,4 +61,4 @@ class ProductManager{
  //productos.getProduct();
  //productos.getProductById(3);
  //productos.deleteProductById(2);
- productos.updateProduct({"title":"silla","description":"para sentarse","price":2500,"thumbmail":"imagen2.com","code":"abc124","stock":20,"id":2})
+ //productos.updateProduct({"title":"silla","description":"para sentarse","price":2500,"thumbmail":"imagen2.com","code":"abc124","stock":20,"id":2})
