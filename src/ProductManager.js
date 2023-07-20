@@ -1,8 +1,6 @@
 
-const { log } = require('console')
-const fs= require('fs');
-const { json } = require('stream/consumers');
-class ProductManager{
+import {promises as fs} from 'fs';
+export default class  ProductManager{
     constructor(){
         this.path= "./productos.json";
         this.products = [];
@@ -13,17 +11,17 @@ class ProductManager{
         let product = {title, description, price, thumbmail, code, stock, id:ProductManager.id};
         this.products.push(product);
     
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
+        await fs.writeFile(this.path, JSON.stringify(this.products));
     }
     
 
     getProduct = async()=>{
-        let lectura =  await fs.promises.readFile(this.path,'utf-8');
-        console.log(JSON.parse(lectura));
+        let lectura =  await fs.readFile(this.path,'utf-8');
+        return JSON.parse(lectura);
     }
 
     getProductById= async (id)=> {
-        let lectura =  await fs.promises.readFile(this.path,'utf-8');
+        let lectura =  await fs.readFile(this.path,'utf-8');
         let respuesta = JSON.parse(lectura);
         if(!respuesta.find(product => product.id === id)){
             console.log('producto no encontrado')
@@ -32,25 +30,25 @@ class ProductManager{
         console.log(lecturaById);}
     }
     deleteProductById= async (id)=>{
-        let lectura =  await fs.promises.readFile(this.path,'utf-8');
+        let lectura =  await fs.readFile(this.path,'utf-8');
         let respuesta = JSON.parse(lectura);
         let filterProduct = respuesta.filter(product => product.id != id)
        
 
         //console.log(filterProduct);
-        await fs.promises.writeFile(this.path, JSON.stringify(filterProduct))
+        await fs.writeFile(this.path, JSON.stringify(filterProduct))
     }
     updateProduct=async({id, ...productos})=>{
         await this.deleteProductById(id)
-        let lectura =  await fs.promises.readFile(this.path,'utf-8');
+        let lectura =  await fs.readFile(this.path,'utf-8');
         let prodSinModif = JSON.parse(lectura);
         let prodModif = [{...productos, id},...prodSinModif];
-        await fs.promises.writeFile(this.path, JSON.stringify(prodModif))
+        await fs.writeFile(this.path, JSON.stringify(prodModif))
 
     }  
 }
 
- const productos = new ProductManager();
+ 
 
 
 ;
@@ -58,6 +56,9 @@ class ProductManager{
  //productos.addProduct('mesa','para comer',2000,'imagen.com','abc123',10)
  //productos.addProduct('silla','para sentarse',1500,'imagen2.com','abc124',20)
  //productos.addProduct('Cama','para acostarse',10000,'imagen3.com','abc125',30)
+ //productos.addProduct('Espejo','para mirarse',3000,'imagen4.com','abc126',35)
+ //productos.addProduct('armario','para guardar ropa',20000,'imagen5.com','abc127',15)
+ //productos.addProduct('sillon','para sentarse',8000,'imagen6.com','abc128',10)
  //productos.getProduct();
  //productos.getProductById(3);
  //productos.deleteProductById(2);
