@@ -1,15 +1,13 @@
 import  express from 'express';
 import ProductManager from './ProductManager.js';
 
-
 // declaramos express
 const app = express();
+app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 const productos = new ProductManager();
 
 const allProducts = productos.getProduct();
-
-
 
 const PORT = 8080;
 
@@ -23,10 +21,27 @@ app.get('/products', async (req, res) => {
 })
 
 app.get('/products/:pid', async (req, res) => {
-    let pid = parseInt(req.params.pid);
+    let pid = req.params.pid;
     let totalProducts = await allProducts;
     let productById = totalProducts.find(product => product.id === pid)
     res.send(productById)
+
+})
+
+app.post('/products', async(req,res)=>{
+    let newProduct = req.body;
+    res.send(await productos.addProduct(newProduct))
+})
+
+app.delete('/products/:pid', async (req, res) => {
+    let pid = req.params.pid;
+    res.send(await productos.deleteProductById(pid))
+})
+
+app.put('/products/:pid', async (req,res)=>{
+    let pid =req.params.pid;
+    let newProduct = req.body;
+    res.send(await productos.updateProduct(pid, newProduct));
 
 })
 
