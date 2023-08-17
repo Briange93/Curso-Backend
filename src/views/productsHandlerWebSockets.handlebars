@@ -1,0 +1,41 @@
+<div>
+        <div class="realTimeProductsForm">
+            <h2>Gestión de productos</h2>
+            <div>
+                <label for="productId">Id :</label>
+                <input id="productId" type="text">
+            </div>
+            <div>
+                <label for="title">Titulo:</label>
+                <input id="title" type="text">
+            </div>
+            <div>
+                <label for="description">Descripción:</label>
+                <input id="description" type="text">
+            </div>
+            <div>
+                <label for="code">Codigo:</label>
+                <input id="code" type="text">
+            </div>
+            <div>
+                <label for="price">Precio:</label>
+                <input id="price" type="text">
+            </div>
+            <div>
+                <label for="stock">Stock:</label>
+                <input id="stock" type="text">
+            </div>
+        
+            <div class="formButtons">
+                <button id="createProduct">Crear</button>
+                <button id="updateProduct">Actualizar</button>
+                <button id="deleteProduct">Borrar</button>     
+            </div>
+
+            <div>
+                <p id="message"></p>
+            </div>
+        </div>
+    </div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/productHandlerWebSockets.js"></script>

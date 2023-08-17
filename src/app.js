@@ -34,8 +34,37 @@ app.get('/', async(req,res)=>{
         productos : allProducts
     })
 })
-io.on('connection',(socket) =>{
+app.get('/realtimeproducts', async(req,res)=>{
+    let allProducts = await products.getProduct();
+    res.render("realTimeProducts",{
+        title: 'Productos',
+        products : allProducts
+    })
+})
+app.get("/productsHandlerWebSockets", (req, res) => {
+    res.render("productsHandlerWebSockets", {});
+})
+io.on('connection',async (socket) =>{
     console.log('Conectado con Web Socket');
+    socket.emit("updateProductsRealTime",await products.getProduct())
+    
+    socket.on("createProduct",async  data => {
+        let productCreated =await products.addProduct(data)
+        socket.emit("createProductMessage",productCreated )
+        socket.emit("updateProductsRealTime",products.getProduct())
+    })
+
+    socket.on("updateProduct",async data => {
+        let messageUpdated =await products.updateProduct(parseInt(data.id), data.data)
+        socket.emit("updateProductMessage",messageUpdated )
+        socket.emit("updateProductsRealTime",products.getProduct())
+    })
+
+    socket.on("deleteProduct",async data => {
+        let messageDeleted =await products.deleteProductById(data);
+        socket.emit("deleteProductMessage",messageDeleted )
+        socket.emit("updateProductsRealTime",products.getProduct())
+    })
 })
 
 
