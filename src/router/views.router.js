@@ -5,7 +5,7 @@ const viewRout = viewRouter();
 
 
 viewRout.get('/',(req,res)=>{
-    res.render('productsHandlerWebSockets',{})
+    res.render('index',{})
 });
 
 //Session management:
@@ -58,7 +58,7 @@ viewRout.post("/register", async (req, res) => {
         password // se ecripta despues
     }
     const result = await userModel.create(user);
-    res.send({ status: "success", message: "Usuario creado con exito con ID: " + result.id })
+    res.status(200).send({ status: "success", message: "Usuario creado con exito con ID: " + result._id })
 });
 
 
