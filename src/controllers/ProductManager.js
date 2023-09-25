@@ -45,7 +45,6 @@ export default class productService {
   }
   isThisCodeRepeated= async (code)=>{
   const listaProd=await this.getAll();
-  console.log(`lista prod title:${listaProd[0].title},lista prod: ${listaProd[0].price}`);
   const isCodeRepeated = listaProd.some((product) => product.code === code);
   console.log(isCodeRepeated);
   if (!isCodeRepeated) {

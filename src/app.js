@@ -64,7 +64,7 @@ app.get('/', async(req,res)=>{
         productos : allProducts
     })
 })
-app.get('/realtimeproducts', async(req,res)=>{
+app.get('/api/products', async(req,res)=>{
     let allProducts = await products.getAll();
     res.render("realTimeProducts",{
         title: 'Productos',

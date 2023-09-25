@@ -5,7 +5,7 @@ const viewRout = viewRouter();
 
 
 viewRout.get('/',(req,res)=>{
-    res.render('index',{})
+    res.render('home',{})
 });
 
 //Session management:
