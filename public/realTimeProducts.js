@@ -12,7 +12,6 @@ socket.on("updateProductsRealTime", data => {
             <p>Codigo: ${product.code}</p>
             <p>Precio: ${product.price}</p>
             <p>Stock: ${product.stock} </p>
-            <p>ID: ${product.id}</p>
         </div>
         `
     });

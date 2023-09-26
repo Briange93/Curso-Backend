@@ -1,6 +1,15 @@
 
-    <article id="list-products">
-    
+    <article id="all-products">
+    {{#each products}}
+        <div class="productRealTimeItem"> 
+            <p>Titulo: {{this.title}} </p>
+            <p>Descripción: {{this.description}} </p>
+            <p>Codigo: {{this.code}} </p>
+            <p>Precio: {{this.price}}</p>
+            <p>Stock: {{this.stock}} </p>
+        </div>
+
+    {{/each}}
     </article>
        
 

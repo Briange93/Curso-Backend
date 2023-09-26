@@ -4,19 +4,18 @@ import routerProd from './router/product.js';
 import routerCart from './router/carts.js';
 import __dirname from '../utils.js';
 import * as path from 'path';
-import ProductManager from './controllers/ProductManager.js';
+import productService from './controllers/ProductManager.js';
 import {Server} from 'socket.io';
 import mongoose from 'mongoose';
 import userRouter from './router/users.router.js';
-import viewRouter from './router/views.router.js';
 import { userModel } from './models/user.model.js';
 import sessionsRouter from './router/sessions.router.js'
 import session from 'express-session';
-import FileStore from 'session-file-store'
-import MongoStore from 'connect-mongo'
+import FileStore from 'session-file-store';
+import MongoStore from 'connect-mongo';
 import viewRout from './router/views.router.js';
 
-const products = new ProductManager;
+const products = new productService();
 
 // declaramos express
 const app = express();
@@ -61,11 +60,12 @@ app.get('/', async(req,res)=>{
     let allProducts = await products.getAll();
     res.render("home",{
         title: 'Productos',
-        productos : allProducts
+        listaproductos : allProducts
     })
 })
 app.get('/api/products', async(req,res)=>{
     let allProducts = await products.getAll();
+    console.log(allProducts);
     res.render("realTimeProducts",{
         title: 'Productos',
         products : allProducts
@@ -85,7 +85,7 @@ io.on('connection',async (socket) =>{
     })
 
     socket.on("updateProduct",async data => {
-        let messageUpdated =await products.update(parseInt(data.id), data.data)
+        let messageUpdated =await products.update(data.id, data.data)
         socket.emit("updateProductMessage",messageUpdated )
         socket.emit("updateProductsRealTime",products.getAll())
     })

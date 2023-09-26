@@ -6,74 +6,53 @@ socketCliente.on("all-products", (products) => {
 });
 
 // Función para actualizar la lista de productos en la página web
-function updateProductList (productLista) {
+function updateProductList(productLista) {
   let div = document.getElementById("list-products");
   let productos = "";
-  console.log(`productLista : ${productLista}`);
 
   productLista.forEach((product) => {
     productos += `
-        <article>
-      <div>
+      <article>
         <div>
-          <img src="${product.thumbnail}"  />
-        </div>
-        <div>
-          <h2>${product.title}</h2>
+          
           <div>
-            <h2>${product.description}</h2>
+            <h2>${product.title}</h2>
+            <div>
+              <p>${product.description}</p>
+            </div>
+            <div>
+              <p>$${product.price}</p>
+            </div>
+            <div>
+              <button class="btnAddProduct" data-product-id="${product._id}">Agregar al carrito</button>
+            </div>
+            <div>
+              <button class="btnVerMas" data-product-id="${product._id}">VER MAS...</button>
+            </div>
           </div>
-          <div>
-            <h2>US$${product.price}</h2>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <a href="#">Buy Now</a>
         </div>
-      </div>
-      
-    </article>
-        
-        
-        
-        
-        
-        
-        `;
-  })
-  div.innerHTML = productos};
-
-  let form = document.getElementById("formProduct");
-  form.addEventListener("click", (evt) => {
-    evt.preventDefault();
-
-    let title = form.elements.title.value;
-    let description = form.elements.description.value;
-    let price = form.elements.price.value;
-    let thumbnail = [form.elements.thumbnail.value];
-    let code = form.elements.code.value;
-    let stock = form.elements.stock.value;
-    let status=true;
-    socketCliente.emit('addProduct', {
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-      status
+      </article>`;
   });
 
-  form.reset();
-});
+  div.innerHTML = productos;
 
-  document.getElementById("delete-btn").addEventListener("click", function () {
-    const deleteidinput = document.getElementById("id-prod");
-    const deleteid = parseInt(deleteidinput.value);
-    socketCliente.emit("deleteProduct", deleteid);
-    deleteidinput.value = "";
+  // Agregar evento click a los botones "Agregar al carrito"
+  const btnsAgregarProducto = document.querySelectorAll(".btnAddProduct");
+  btnsAgregarProducto.forEach((btn) => {
+    btn.addEventListener("click", (evt) => {
+      const productId = btn.getAttribute("data-product-id");
+      console.log(`Agregando producto con ID ${productId} al carrito`);
+      socketCliente.emit('addNewProduct', productId);
+    });
   });
-socketCliente.on("productosupdated", (obj) => {
-  updateProductList(obj);
-});
+
+  // Agregar evento click a los botones "VER MAS..."
+  const btnsVerMas = document.querySelectorAll(".btnVerMas");
+  btnsVerMas.forEach((btn) => {
+    btn.addEventListener("click", (evt) => {
+      const productId = btn.getAttribute("data-product-id");
+      // Lógica para mostrar más detalles del producto usando el productId
+      console.log(`Mostrando detalles del producto con ID ${productId}`);
+    });
+  });
+}

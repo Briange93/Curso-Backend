@@ -1,32 +1,61 @@
-const socketCliente = io();
+const socket = io();
 
-let form = document.getElementById("formProduct");
-  form.addEventListener("submit", (evt) => {
-    evt.preventDefault();
+const createProductButton = document.getElementById("createProduct");
+const updateProductButton = document.getElementById("updateProduct");
+const deleteProductButton = document.getElementById("deleteProduct");
+const message = document.getElementById("message")
 
-    let title = form.elements.title.value;
-    let description = form.elements.description.value;
-    let price = form.elements.price.value;
-    let thumbnail = [form.elements.thumbnail.value];
-    let code = form.elements.code.value;
-    let stock = form.elements.stock.value;
-    let status=true;
-    socketCliente.emit('addProduct', {
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-      status
-  });
+socket.on("createProductMessage",data => {
 
-  form.reset();
-});
+        updateMessage("Producto creado correctamente!")
+    
+})
 
-  document.getElementById("delete-btn").addEventListener("click", function () {
-    const deleteidinput = document.getElementById("id-prod");
-    const deleteid = parseInt(deleteidinput.value);
-    socketCliente.emit("deleteProduct", deleteid);
-    deleteidinput.value = "";
-  });
+socket.on("updateProductMessage", data => {
+        
+        updateMessage("Producto actualizado correctamente!")
+})
+
+socket.on("deleteProductMessage", data => {
+        
+        updateMessage("Producto eliminado correctamente!")
+})
+
+
+createProductButton.onclick = () => {
+    let data = getFormData(); 
+    socket.emit("createProduct",data);
+    updateMessage("Producto creado")
+
+}
+updateProductButton.onclick = () => {
+    let data = getFormData();
+    let id = document.getElementById("productId").value;
+    if (id) {
+        socket.emit("updateProduct",{id, data});
+    }else{
+        updateMessage("No puede estar el ID vacio")
+    }
+}
+deleteProductButton.onclick = () => {
+    let id = document.getElementById("productId").value;
+    if (id) {
+        socket.emit("deleteProduct",id);
+    }else{
+        updateMessage("No puede estar el ID vacio")
+    }
+}
+
+function getFormData(){
+    let title = document.getElementById("title").value;
+    let description = document.getElementById("description").value;
+    let code = document.getElementById("code").value;
+    let price = parseInt(document.getElementById("price").value);
+    let stock = parseInt(document.getElementById("stock").value);
+
+    return {title,description,code,price,status: true,stock}
+}
+
+function updateMessage(messages){
+    message.innerHTML = messages
+}

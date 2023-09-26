@@ -58,7 +58,7 @@ export default class productService {
   }
   getAll= async () =>{
     let products = await productModel.find();
-    console.log(products);
+    //console.log(products);
     return products;
   }
   save = async (product) => {
